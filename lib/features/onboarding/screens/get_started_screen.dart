@@ -83,7 +83,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
               ),
               onPressed: _selected != null
                   ? () {
-                      context.push(AppRoutes.login);
+                      context.go(AppRoutes.login);
                     }
                   : null,
               child: const Text("Continue", style: TextStyle(fontSize: 16)),

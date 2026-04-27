@@ -21,7 +21,7 @@ abstract class AppColors {
   static const Color accent = Color(0xFFFFC107); // Action yellow
   static const Color accentDark = Color(0xFFE0A800);
   static const Color accentLight = Color(0xFFFFF4CC);
-// role colors
+  // role colors
   static const Color jobSeeker = Color(0xFF2563EB); // Blue
   static const Color employer = Color(0xFF7C3AED); // Purple
 
@@ -53,7 +53,7 @@ abstract class AppColors {
 
   static const Color hired = Color(0xFF10B981);
   static const Color hiredLight = Color(0xFFE6FBF3);
-// neutrals
+  // neutrals
   static const Color white = Color(0xFFFFFFFF);
   static const Color surface = Color(0xFFF8FAFC);
   static const Color surfaceSoft = Color(0xFFF1F5F9);
@@ -62,14 +62,13 @@ abstract class AppColors {
   static const Color border = Color(0xFFE5E7EB);
   static const Color borderDark = Color(0xFFD1D5DB);
 
-//  text colors
+  //  text colors
   static const Color textPrimary = Color(0xFF111827);
   static const Color textSecondary = Color(0xFF6B7280);
   static const Color textTertiary = Color(0xFF9CA3AF);
   static const Color textInverse = Color(0xFFFFFFFF);
 
   static const Color disabled = Color(0xFFD1D5DB);
-
 
   static const Color inputFill = Color(0xFFFFFFFF);
   static const Color inputBorder = Color(0xFFE5E7EB);
@@ -81,11 +80,10 @@ abstract class AppColors {
 
   static const Color divider = Color(0xFFE5E7EB);
 
-  
   static const Color notificationUnreadDot = Color(0xFF2563EB);
   static const Color notificationBackground = Color(0xFFF0F7FF);
 
-//  gradients
+  //  gradients
   static const LinearGradient primaryGradient = LinearGradient(
     colors: [Color(0xFF1F2A44), Color(0xFF2F3B5F)],
     begin: Alignment.topLeft,
@@ -121,4 +119,8 @@ abstract class AppColors {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
+}
+
+class AppSpacing {
+  static const screenPadding = EdgeInsets.symmetric(horizontal: 24.0);
 }
