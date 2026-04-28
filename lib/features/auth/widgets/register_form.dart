@@ -1,25 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jobhub/core/router/app_router.dart';
+import 'package:jobhub/features/auth/widgets/role_card.dart';
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+class RegisterForm extends StatefulWidget {
+  const RegisterForm({super.key});
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  State<RegisterForm> createState() => _RegisterFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
   bool obscurePassword = true;
+  bool obscureConfirmPassword = true;
+  String? _selected;
 
   @override
   void dispose() {
+    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
+    confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -77,7 +84,22 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Email
+          //  Full Name 
+          _fieldLabel("Full Name"),
+          TextFormField(
+            controller: nameController,
+            keyboardType: TextInputType.name,
+            cursorColor: Colors.blue,
+            decoration: _fieldDecoration(hint: "John Doe"),
+            validator: (value) {
+              if (value == null || value.isEmpty) return "Name is required";
+              return null;
+            },
+          ),
+
+          const SizedBox(height: 20),
+
+          //  Email
           _fieldLabel("Email"),
           TextFormField(
             controller: emailController,
@@ -93,7 +115,7 @@ class _LoginFormState extends State<LoginForm> {
 
           const SizedBox(height: 20),
 
-          // Password
+          //  Password 
           _fieldLabel("Password"),
           TextFormField(
             controller: passwordController,
@@ -118,27 +140,76 @@ class _LoginFormState extends State<LoginForm> {
             },
           ),
 
-          //  Forgot password 
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () {
-                // TODO: navigate to forgot password
-              },
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              child: const Text(
-                "Forgot password?",
-                style: TextStyle(color: Colors.blue, fontSize: 13),
+          const SizedBox(height: 20),
+
+          //  Confirm Password 
+          _fieldLabel("Confirm Password"),
+          TextFormField(
+            controller: confirmPasswordController,
+            obscureText: obscureConfirmPassword,
+            cursorColor: Colors.blue,
+            decoration: _fieldDecoration(
+              hint: "Confirm your password",
+              suffix: IconButton(
+                icon: Icon(
+                  obscureConfirmPassword
+                      ? Icons.visibility_off
+                      : Icons.visibility,
+                  color: Colors.grey.shade500,
+                  size: 20,
+                ),
+                onPressed: () => setState(
+                    () => obscureConfirmPassword = !obscureConfirmPassword),
               ),
             ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Please confirm your password";
+              }
+              if (value != passwordController.text) {
+                return "Passwords do not match";
+              }
+              return null;
+            },
           ),
 
-          const SizedBox(height: 8),
+          const SizedBox(height: 24),
 
-          // ── Sign In button ─────────────────────────────
+          //  Role selection 
+          const Text(
+            "I want to",
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+          ),
+
+          const SizedBox(height: 12),
+
+          Row(
+            children: [
+              Expanded(
+                child: RoleCard(
+                  title: "I'm looking for a job",
+                  subtitle: "Find and apply to opportunities",
+                  icon: Icons.work_outline,
+                  selected: _selected == 'jobseeker',
+                  onTap: () => setState(() => _selected = 'jobseeker'),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: RoleCard(
+                  title: "I'm hiring",
+                  subtitle: "Post jobs and find talent",
+                  icon: Icons.person_search_outlined,
+                  selected: _selected == 'hiring',
+                  onTap: () => setState(() => _selected = 'hiring'),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 28),
+
+          //  Create Account button 
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -152,7 +223,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
               child: const Text(
-                "Sign In",
+                "Create Account",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -164,7 +235,7 @@ class _LoginFormState extends State<LoginForm> {
 
           const SizedBox(height: 24),
 
-          // ── Divider ────────────────────────────────────
+          //  Divider 
           Row(
             children: [
               Expanded(child: Divider(thickness: 1, color: Colors.grey.shade200)),
@@ -181,7 +252,7 @@ class _LoginFormState extends State<LoginForm> {
 
           const SizedBox(height: 16),
 
-          // ── Google button ──────────────────────────────
+          //  Google button 
           SizedBox(
             width: double.infinity,
             child: OutlinedButton.icon(
@@ -207,17 +278,17 @@ class _LoginFormState extends State<LoginForm> {
 
           const SizedBox(height: 20),
 
-          //  Register link 
+          //  Sign in link 
           Center(
             child: GestureDetector(
-              onTap: () => context.push(AppRoutes.register),
+              onTap: () => context.push(AppRoutes.login),
               child: Text.rich(
                 TextSpan(
                   style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
                   children: const [
-                    TextSpan(text: "Don't have an account?  "),
+                    TextSpan(text: "Already have an account?  "),
                     TextSpan(
-                      text: "Register",
+                      text: "Sign In",
                       style: TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,
